@@ -1,10 +1,10 @@
-package FakultasControllers
+package ProdiControllers
 
 import "github.com/gin-gonic/gin"
 
-func GetAllFakultas(ctx *gin.Context) {
+func GetAllProdi(ctx *gin.Context) {
 
-	isValidated := false
+	isValidated := true
 
 	if !isValidated {
 		ctx.AbortWithStatusJSON(400, gin.H{
@@ -14,7 +14,7 @@ func GetAllFakultas(ctx *gin.Context) {
 	}
 
 	ctx.JSON(200, gin.H{
-		"message": "Hello Fakultas",
+		"message": "Hello Prodi",
 	})
 
 }
