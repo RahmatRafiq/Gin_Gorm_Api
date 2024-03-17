@@ -4,7 +4,7 @@ import "github.com/gin-gonic/gin"
 
 func GetAllFakultas(ctx *gin.Context) {
 
-	isValidated := false
+	isValidated := true
 
 	if !isValidated {
 		ctx.AbortWithStatusJSON(400, gin.H{
