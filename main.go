@@ -5,9 +5,25 @@ import (
 )
 
 func main() {
-	r := gin.Default()
+	app := gin.Default()
 
-	// Tambahkan rute-rute API di sini
+	route := app
 
-	r.Run(":8080")
+	route.GET("/", func(ctx *gin.Context) {
+
+		isValidated := false
+
+		if isValidated {
+			ctx.AbortWithStatusJSON(400, gin.H{
+				"message": "Bad Request Something Field not Validated",
+			})
+			return
+		}
+
+		ctx.JSON(200, gin.H{
+			"message": "Hello World",
+		})
+
+		return
+	})
 }
