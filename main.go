@@ -15,7 +15,7 @@ func main() {
 
 		if isValidated {
 			ctx.AbortWithStatusJSON(400, gin.H{
-				"message": "Bad Request Something Field not Validated",
+				"message": "Bad Request Something Field not Valid",
 			})
 			return
 		}
@@ -23,7 +23,6 @@ func main() {
 		ctx.JSON(200, gin.H{
 			"message": "Hello World",
 		})
-
-		return
 	})
+	app.Run(":8000")
 }
