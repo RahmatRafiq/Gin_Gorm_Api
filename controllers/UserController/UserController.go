@@ -50,6 +50,25 @@ func GetUser(ctx *gin.Context) {
 
 }
 
-func Create(ctx *gin.Context) {
+func Store(ctx *gin.Context) {
+	user := new(models.Users)
+	err := ctx.ShouldBindJSON(user)
+	if err != nil {
+		ctx.JSON(400, gin.H{
+			"message": "Bad Request",
+		})
+		return
+	}
 
+	errDb := database.DB.Table("users").Create(&user).Error
+	if errDb != nil {
+		ctx.JSON(500, gin.H{
+			"message": "Internal Server Error",
+		})
+		return
+	}
+	ctx.JSON(200, gin.H{
+		"message": "Data Created",
+		"data":    user,
+	})
 }

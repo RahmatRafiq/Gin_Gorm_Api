@@ -14,6 +14,7 @@ func InitRoutes(app *gin.Engine) {
 
 	route.GET("/user", UserController.GetAllUser)
 	route.GET("/user/:id", UserController.GetUser)
+	route.POST("/user", UserController.Store)
 
 	route.GET("/mahasiswa", MahasiswaControllers.GetAllMahasiswa)
 	route.GET("/fakultas", FakultasControllers.GetAllFakultas)
