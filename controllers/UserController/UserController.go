@@ -24,24 +24,13 @@ func GetAllUser(ctx *gin.Context) {
 
 }
 
-// func CreateUser(ctx *gin.Context) {
-// 	var user models.Users
-// 	if err := ctx.ShouldBindJSON(&user); err != nil {
-// 		ctx.AbortWithStatusJSON(400, gin.H{
-// 			"message": "Invalid request body",
-// 		})
-// 		return
-// 	}
+func GetUser(ctx *gin.Context) {
+	id := ctx.Param("id")
+	users := new([]models.Users)
+	database.DB.Table("users").Where("id = ?", id).Find()
 
-// 	if err := database.DB.Table("users").Create(&user).Error; err != nil {
-// 		ctx.AbortWithStatusJSON(500, gin.H{
-// 			"message": "Internal Server Error",
-// 		})
-// 		return
-// 	}
+}
 
-// 	ctx.JSON(201, gin.H{
-// 		"message": "User created successfully",
-// 		"data":    user,
-// 	})
-// }
+func Create(ctx *gin.Context) {
+
+}
