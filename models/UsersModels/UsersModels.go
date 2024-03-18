@@ -6,4 +6,6 @@ type Users struct {
 	Password    string `json:"password"`
 	Role        string `json:"role"`
 	MahasiswaID uint   `json:"id_mahasiswa"`
+
+	// Mahasiswa Mahasiswa `gorm:"foreignKey:MahasiswaID"`
 }
