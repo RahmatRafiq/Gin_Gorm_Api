@@ -3,6 +3,7 @@ package UserController
 import (
 	"Gin_Gorm_Api/database"
 	models "Gin_Gorm_Api/models/UsersModels"
+	"Gin_Gorm_Api/requests"
 	"Gin_Gorm_Api/responses"
 	"net/http"
 
@@ -51,24 +52,12 @@ func GetUser(ctx *gin.Context) {
 }
 
 func Store(ctx *gin.Context) {
-	user := new(models.Users)
-	err := ctx.ShouldBindJSON(user)
-	if err != nil {
-		ctx.JSON(400, gin.H{
-			"message": "Bad Request",
-		})
-		return
-	}
+	UserRequest := new(requests.UserRequest)
 
-	errDb := database.DB.Table("users").Create(&user).Error
-	if errDb != nil {
-		ctx.JSON(500, gin.H{
-			"message": "Internal Server Error",
+	if errReq := ctx.ShouldBind(&UserRequest); errReq != nil {
+		ctx.JSON(400, gin.H{
+			"message": errReq.Error(),
 		})
 		return
 	}
-	ctx.JSON(200, gin.H{
-		"message": "Data Created",
-		"data":    user,
-	})
 }
