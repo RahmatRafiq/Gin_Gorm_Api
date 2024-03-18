@@ -13,7 +13,7 @@ func InitRoutes(app *gin.Engine) {
 	route := app
 
 	route.GET("/user", UserController.GetAllUser)
-	route.POST("/user/create", UserController.Create)
+	route.GET("/user/:id", UserController.GetUser)
 
 	route.GET("/mahasiswa", MahasiswaControllers.GetAllMahasiswa)
 	route.GET("/fakultas", FakultasControllers.GetAllFakultas)
