@@ -65,7 +65,7 @@ func Store(ctx *gin.Context) {
 	user.Username = &UserReq.Username
 	user.Password = &UserReq.Password
 	user.Role = &UserReq.Role
-	// user.MahasiswaID = &UserReq.MahasiswaID
+	user.MahasiswaID = &UserReq.MahasiswaID
 
 	errDb := database.DB.Table("users").Create(&user).Error
 	if errDb != nil {
