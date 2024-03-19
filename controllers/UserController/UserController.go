@@ -62,8 +62,8 @@ func Store(ctx *gin.Context) {
 	}
 
 	userEmailExist := new(models.Users)
-	err := database.DB.Table("users").Where("email = ?", userReq.Email).First(&userEmailExist).Error
-	if err == nil {
+	database.DB.Table("users").Where("email = ?", userReq.Email).First(&userEmailExist)
+	if userEmailExist.Email != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": "Email already exists",
 		})
