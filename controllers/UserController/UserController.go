@@ -52,30 +52,41 @@ func GetUser(ctx *gin.Context) {
 }
 
 func Store(ctx *gin.Context) {
-	UserReq := new(requests.UserRequest)
+	userReq := new(requests.UserRequest)
 
-	if errReq := ctx.ShouldBind(&UserReq); errReq != nil {
-		ctx.JSON(400, gin.H{
-			"message": errReq.Error(),
+	if err := ctx.ShouldBind(&userReq); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid request body",
 		})
 		return
 	}
 
-	user := new(models.Users)
-	user.Username = &UserReq.Username
-	user.Password = &UserReq.Password
-	user.Role = &UserReq.Role
-	user.MahasiswaID = &UserReq.MahasiswaID
-
-	errDb := database.DB.Table("users").Create(&user).Error
-	if errDb != nil {
-		ctx.JSON(500, gin.H{
-			"message": "can't create data",
+	userEmailExist := new(models.Users)
+	err := database.DB.Table("users").Where("email = ?", userReq.Email).First(&userEmailExist).Error
+	if err == nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Email already exists",
 		})
 		return
 	}
-	ctx.JSON(200, gin.H{
-		"message": "data successfully created",
+
+	user := models.Users{
+		Username:    &userReq.Username,
+		Email:       &userReq.Email,
+		Password:    &userReq.Password,
+		Role:        &userReq.Role,
+		MahasiswaID: &userReq.MahasiswaID,
+	}
+
+	if err := database.DB.Table("users").Create(&user).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Can't create user",
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "User created successfully",
 		"data":    user,
 	})
 }
