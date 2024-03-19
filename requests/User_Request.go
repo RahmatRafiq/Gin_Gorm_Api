@@ -6,5 +6,4 @@ type UserRequest struct {
 	Password    string `json:"password" form:"password" binding:"required"`
 	Role        string `json:"role" form:"role" binding:"required"`
 	MahasiswaID int    `json:"id_mahasiswa" form:"id_mahasiswa" binding:"required"`
-	// Email    string `json:"email" binding:"required,email,unique"`
 }

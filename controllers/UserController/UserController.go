@@ -90,3 +90,62 @@ func Store(ctx *gin.Context) {
 		"data":    user,
 	})
 }
+
+func Update(ctx *gin.Context) {
+	id := ctx.Param("id")
+	user := new(models.Users)
+	userReq := new(requests.UserRequest)
+	userEmailExist := new(models.Users)
+
+	if errReq := ctx.ShouldBind(&userReq); errReq != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": errReq.Error(),
+		})
+		return
+	}
+
+	errDB := database.DB.Table("users").Where("id = ?", id).Find(&user).Error
+	if errDB != nil {
+		ctx.JSON(500, gin.H{
+			"message": "Internal Server Error",
+		})
+		return
+	}
+	if user.ID == nil {
+		ctx.JSON(404, gin.H{
+			"message": "User data not found",
+		})
+		return
+	}
+	errUserEmailExist := database.DB.Table("users").Where("email = ?", userReq.Email).Find(&userEmailExist).Error
+	if errUserEmailExist != nil {
+		ctx.JSON(500, gin.H{
+			"message": "Internal Server Error",
+		})
+		return
+	}
+	if userEmailExist.Email != nil && *user.ID != *userEmailExist.ID {
+		ctx.JSON(400, gin.H{
+			"message": "Email already used",
+		})
+		return
+	}
+
+	user.Username = &userReq.Username
+	user.Email = &userReq.Email
+	user.Password = &userReq.Password
+	user.Role = &userReq.Role
+	user.MahasiswaID = &userReq.MahasiswaID
+
+	errUpdate := database.DB.Table("users").Where("id = ?", id).Updates(&user).Error
+	if errUpdate != nil {
+		ctx.JSON(500, gin.H{
+			"message": "can't update data",
+		})
+		return
+	}
+	ctx.JSON(200, gin.H{
+		"message": "Data updated successfully",
+		"data":    user,
+	})
+}
