@@ -1,9 +1,9 @@
 package requests
 
 type UserRequest struct {
-	Name     string `json:"name" binding:"required"`
 	Username string `json:"username" binding:"required"`
-	Password string `json:"password"`
-	Role     string `json:"role"`
+	Password string `json:"password" binding:"required"`
+	Role     string `json:"role" binding:"required"`
+	// MahasiswaID uint   `json:"id_mahasiswa" binding:"required"`
 	// Email    string `json:"email" binding:"required,email,unique"`
 }

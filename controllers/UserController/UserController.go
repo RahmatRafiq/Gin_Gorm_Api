@@ -52,12 +52,30 @@ func GetUser(ctx *gin.Context) {
 }
 
 func Store(ctx *gin.Context) {
-	UserRequest := new(requests.UserRequest)
+	UserReq := new(requests.UserRequest)
 
-	if errReq := ctx.ShouldBind(&UserRequest); errReq != nil {
+	if errReq := ctx.ShouldBind(&UserReq); errReq != nil {
 		ctx.JSON(400, gin.H{
 			"message": errReq.Error(),
 		})
 		return
 	}
+
+	user := new(models.Users)
+	user.Username = &UserReq.Username
+	user.Password = &UserReq.Password
+	user.Role = &UserReq.Role
+	// user.MahasiswaID = &UserReq.MahasiswaID
+
+	errDb := database.DB.Table("users").Create(&user).Error
+	if errDb != nil {
+		ctx.JSON(500, gin.H{
+			"message": "can't create data",
+		})
+		return
+	}
+	ctx.JSON(200, gin.H{
+		"message": "data successfully created",
+		"data":    user,
+	})
 }
