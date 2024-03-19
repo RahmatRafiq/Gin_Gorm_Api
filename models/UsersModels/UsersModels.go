@@ -7,5 +7,5 @@ type Users struct {
 	Username    *string `json:"username"`
 	Password    *string `json:"password"`
 	Role        *string `json:"role"`
-	MahasiswaID *int    `json:"mahasiswa_id" gorm:"column:mahasiswa_id"`
+	MahasiswaID *int    `json:"id_mahasiswa" gorm:"column:id_mahasiswa"`
 }
