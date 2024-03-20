@@ -2,6 +2,7 @@ package routes
 
 import (
 	FakultasControllers "Gin_Gorm_Api/controllers/FakultasController"
+	"Gin_Gorm_Api/controllers/FileControllers"
 	"Gin_Gorm_Api/controllers/MahasiswaControllers"
 	"Gin_Gorm_Api/controllers/ProdiControllers"
 	"Gin_Gorm_Api/controllers/UserController"
@@ -21,6 +22,8 @@ func InitRoutes(app *gin.Engine) {
 	// /user/paginate?perPage=2 untuk paginasi yang mengambil data 2 per halaman
 	// /user/paginate?perPage=3&page=2 untuk paginasi yang mengambil data 3 per halaman dan menampilkan halaman ke 2
 	// /user/paginate?page=2 untuk paginasi yang mengambil data 10(default) per halaman dan menampilkan halaman ke 2
+
+	route.GET("/file", FileControllers.UploadFile)
 
 	route.GET("/mahasiswa", MahasiswaControllers.GetAllMahasiswa)
 	route.GET("/fakultas", FakultasControllers.GetAllFakultas)
