@@ -5,6 +5,7 @@ import (
 	models "Gin_Gorm_Api/models/UsersModels"
 	"Gin_Gorm_Api/requests"
 	"Gin_Gorm_Api/responses"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -152,6 +153,24 @@ func Update(ctx *gin.Context) {
 
 func Destroy(ctx *gin.Context) {
 	id := ctx.Param("id")
+	user := new(models.Users)
+
+	errFind := database.DB.Table("users").Where("id = ?", id).Find(&user).Error
+	if errFind != nil {
+		ctx.JSON(500, gin.H{
+			"message": "Internal Server Error",
+			"error":   errFind.Error(),
+		})
+		return
+	}
+	log.Println("user", user)
+
+	if user.ID == nil {
+		ctx.JSON(404, gin.H{
+			"message": "User data not found",
+		})
+		return
+	}
 
 	errDB := database.DB.Table("users").Unscoped().Where("id = ?", id).Delete(&models.Users{}).Error
 	if errDB != nil {
