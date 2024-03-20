@@ -18,6 +18,9 @@ func InitRoutes(app *gin.Engine) {
 	route.PATCH("/user/:id", UserController.Update)
 	route.DELETE("/user/:id", UserController.Destroy)
 	route.GET("/user/paginate", UserController.Paginate)
+	// /user/paginate?perPage=2 untuk paginasi yang mengambil data 2 per halaman
+	// /user/paginate?perPage=3&page=2 untuk paginasi yang mengambil data 3 per halaman dan menampilkan halaman ke 2
+	// /user/paginate?page=2 untuk paginasi yang mengambil data 10(default) per halaman dan menampilkan halaman ke 2
 
 	route.GET("/mahasiswa", MahasiswaControllers.GetAllMahasiswa)
 	route.GET("/fakultas", FakultasControllers.GetAllFakultas)
