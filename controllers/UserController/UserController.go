@@ -7,6 +7,7 @@ import (
 	"Gin_Gorm_Api/responses"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,7 +26,6 @@ func GetAllUser(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{
 		"data": users,
 	})
-
 }
 
 func GetUser(ctx *gin.Context) {
@@ -49,7 +49,6 @@ func GetUser(ctx *gin.Context) {
 		"message": "Data Found",
 		"data":    user,
 	})
-
 }
 
 func Store(ctx *gin.Context) {
@@ -183,4 +182,40 @@ func Destroy(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{
 		"message": "Data deleted successfully",
 	})
+}
+
+func Paginate(ctx *gin.Context) {
+
+	page := ctx.Query("page")
+	if page == "" {
+		page = "1"
+	}
+
+	perPage := ctx.Query("perPage")
+	if perPage == "" {
+		perPage = "10"
+	}
+
+	perPageInt, _ := strconv.Atoi(perPage)
+	pageInt, _ := strconv.Atoi(page)
+
+	if pageInt < 0 {
+		pageInt = 1
+
+	}
+
+	users := new([]models.Users)
+	err := database.DB.Table("users").Limit(perPageInt).Offset((pageInt - 1) * perPageInt).Find(&users).Error
+	if err != nil {
+		ctx.AbortWithStatusJSON(500, gin.H{
+			"message": "Internal Server Error",
+		})
+		return
+	}
+	ctx.JSON(200, gin.H{
+		"data":     users,
+		"page":     page,
+		"per_page": perPage,
+	})
+
 }

@@ -17,6 +17,7 @@ func InitRoutes(app *gin.Engine) {
 	route.POST("/user", UserController.Store)
 	route.PATCH("/user/:id", UserController.Update)
 	route.DELETE("/user/:id", UserController.Destroy)
+	route.GET("/user/paginate", UserController.Paginate)
 
 	route.GET("/mahasiswa", MahasiswaControllers.GetAllMahasiswa)
 	route.GET("/fakultas", FakultasControllers.GetAllFakultas)
