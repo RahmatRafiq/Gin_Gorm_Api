@@ -153,7 +153,14 @@ func Update(ctx *gin.Context) {
 func Destroy(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	database.DB.Table("users").Unscoped().Where("id = ?", id).Delete(&models.Users{})
+	errDB := database.DB.Table("users").Unscoped().Where("id = ?", id).Delete(&models.Users{}).Error
+	if errDB != nil {
+		ctx.JSON(500, gin.H{
+			"message": "Internal Server Error",
+			"error":   errDB.Error(),
+		})
+		return
+	}
 	ctx.JSON(200, gin.H{
 		"message": "Data deleted successfully",
 	})
