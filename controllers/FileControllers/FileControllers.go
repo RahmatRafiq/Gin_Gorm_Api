@@ -1,7 +1,9 @@
 package FileControllers
 
 import (
+	FileUtils "Gin_Gorm_Api/utils"
 	"fmt"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,15 +18,10 @@ func UploadFile(ctx *gin.Context) {
 		return
 	}
 
-	// file, errFile := fileHeader.Open()
-	// 	if errFile != nil {
-	// 		panic(errFile)
-	// 	}
+	extensionFile := filepath.Ext(fileHeader.Filename)
+	filename := fmt.Sprintf("%s%s", FileUtils.RandomString(10), extensionFile)
 
-	// extensionFile := filepath.Ext(fileHeader.Filename)
-	// filename :=
-
-	errUpload := ctx.SaveUploadedFile(fileHeader, fmt.Sprintf("./public/files/%s", fileHeader.Filename))
+	errUpload := ctx.SaveUploadedFile(fileHeader, fmt.Sprintf("./public/files/%s", filename))
 
 	if errUpload != nil {
 		ctx.JSON(500, gin.H{
