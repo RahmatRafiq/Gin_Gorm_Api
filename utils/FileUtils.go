@@ -1,6 +1,8 @@
 package FileUtils
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 var charset = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 

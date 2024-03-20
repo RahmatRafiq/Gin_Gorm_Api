@@ -4,6 +4,7 @@ import (
 	FileUtils "Gin_Gorm_Api/utils"
 	"fmt"
 	"path/filepath"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,8 +20,8 @@ func UploadFile(ctx *gin.Context) {
 	}
 
 	extensionFile := filepath.Ext(fileHeader.Filename)
-	filename := fmt.Sprintf("%s%s", FileUtils.RandomString(10), extensionFile)
-
+	currentTime := time.Now().UTC().Format("20060102T150405Z")
+	filename := fmt.Sprintf("%s-%s%s", currentTime, FileUtils.RandomString(20), extensionFile)
 	errUpload := ctx.SaveUploadedFile(fileHeader, fmt.Sprintf("./public/files/%s", filename))
 
 	if errUpload != nil {
