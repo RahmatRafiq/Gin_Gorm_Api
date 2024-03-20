@@ -1,6 +1,6 @@
 package models
 
 type Fakultas struct {
-	ID           uint   `json:"id" gorm:"primary_key"`
-	NamaFakultas string `json:"nama_fakultas"`
+	ID           *uint   `json:"id" gorm:"column:primary_key"`
+	NamaFakultas *string `json:"column:nama_fakultas"`
 }
