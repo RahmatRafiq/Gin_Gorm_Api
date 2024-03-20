@@ -10,4 +10,10 @@ func InitAppConfig() {
 	if portEnv != "" {
 		PORT = portEnv
 	}
+
+	staticRouteEnv := os.Getenv("STATIC_ROUTE")
+	if staticRouteEnv != "" {
+		STATIC_ROUTE = staticRouteEnv
+
+	}
 }
