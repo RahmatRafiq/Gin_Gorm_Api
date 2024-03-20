@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"Gin_Gorm_Api/configs/app_config"
 	FakultasControllers "Gin_Gorm_Api/controllers/FakultasController"
 	"Gin_Gorm_Api/controllers/FileControllers"
 	"Gin_Gorm_Api/controllers/MahasiswaControllers"
@@ -12,6 +13,7 @@ import (
 
 func InitRoutes(app *gin.Engine) {
 	route := app
+	route.Static(app_config.STATIC_ROUTE, app_config.STATIC_DIR)
 
 	route.GET("/user", UserController.GetAllUser)
 	route.GET("/user/:id", UserController.GetUser)
