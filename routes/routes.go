@@ -26,6 +26,7 @@ func InitRoutes(app *gin.Engine) {
 	// /user/paginate?page=2 untuk paginasi yang mengambil data 10(default) per halaman dan menampilkan halaman ke 2
 
 	route.POST("/file", FileControllers.UploadFile)
+	route.DELETE("/file/:filename", FileControllers.HandleDestroyFile)
 
 	route.GET("/mahasiswa", MahasiswaControllers.GetAllMahasiswa)
 	route.GET("/fakultas", FakultasControllers.GetAllFakultas)

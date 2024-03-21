@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/rand"
 	"mime/multipart"
+	"os"
 	"path/filepath"
 	"time"
 
@@ -35,20 +36,6 @@ func FileValidation(fileHeader *multipart.FileHeader, fileType []string) bool {
 	return result
 }
 
-// func FileValidationByExtension(fileHeader *multipart.FileHeader, fileExtension []string) bool {
-// 	extension := filepath.Ext(fileHeader.Filename)
-// 	log.Println("extension", extension)
-// 	result := false
-
-// 	for _, typeFile := range fileExtension {
-// 		if extension == "."+typeFile {
-// 			result = true
-// 			break
-// 		}
-// 	}
-// 	return result
-// }
-
 func FileValidationByExtension(fileHeader *multipart.FileHeader, fileExtension []string) bool {
 	extension := filepath.Ext(fileHeader.Filename)
 	log.Println("extension", extension)
@@ -69,15 +56,6 @@ func RandomFileName(extensionFile string, prefix ...string) string {
 		currentPrefix = prefix[0]
 	}
 
-	// currentPrefix := "file"
-	// if len(prefix) > 0 {
-	// 	if prefix[0] == "" {
-	// 		currentPrefix = prefix[0]
-	// 	}
-	// } else {
-	// 	prefix[0] = "file"
-	// }
-
 	currentTime := time.Now().UTC().Format("20060102T150405Z")
 	filename := fmt.Sprintf("%s-%s-%s%s", currentPrefix, currentTime, RandomString(20), extensionFile)
 
@@ -95,4 +73,13 @@ func SaveFile(ctx *gin.Context, fileHeader *multipart.FileHeader, filename strin
 		return true
 	}
 
+}
+
+func DestroyFile(filename string) error {
+	error := os.Remove(filename)
+	if error != nil {
+		log.Println("Failed to delete file")
+		return error
+	}
+	return nil
 }

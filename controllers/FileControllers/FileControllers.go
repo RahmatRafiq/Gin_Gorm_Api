@@ -43,3 +43,25 @@ func UploadFile(ctx *gin.Context) {
 		"message": "File Uploaded",
 	})
 }
+
+func HandleDestroyFile(ctx *gin.Context) {
+	filename := ctx.Param("filename")
+	if filename == "" {
+		ctx.JSON(400, gin.H{
+			"message": "Filename is required",
+		})
+	}
+
+	err := FileUtils.DestroyFile("./public/files/" + filename)
+
+	if err != nil {
+		ctx.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(200, gin.H{
+		"message": "File Deleted",
+	})
+}
