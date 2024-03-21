@@ -17,17 +17,8 @@ func UploadFile(ctx *gin.Context) {
 		return
 	}
 
-	// fileExtension := []string{".jpg"}
-	// isFileValidated := FileUtils.FileValidation(fileHeader, fileExtension)
-
-	// if !isFileValidated {
-	// 	ctx.AbortWithStatusJSON(400, gin.H{
-	// 		"message": "file not allowed ",
-	// 	})
-	// }
-
-	fileType := []string{"image/img"}
-	isFileValidated := FileUtils.FileValidation(fileHeader, fileType)
+	fileExtension := []string{"png"}
+	isFileValidated := FileUtils.FileValidation(fileHeader, fileExtension)
 
 	if !isFileValidated {
 		ctx.AbortWithStatusJSON(400, gin.H{
@@ -35,8 +26,18 @@ func UploadFile(ctx *gin.Context) {
 		})
 	}
 
+	// fileType := []string{"image/img"}
+	// isFileValidated := FileUtils.FileValidation(fileHeader, fileType)
+
+	// if !isFileValidated {
+	// 	ctx.AbortWithStatusJSON(400, gin.H{
+	// 		"message": "file not allowed ",
+	// 	})
+	// }
+
 	extensionFile := filepath.Ext(fileHeader.Filename)
 	filename := FileUtils.RandomFileName(extensionFile)
+	// filename := FileUtils.RandomFileName(extensionFile, "file")
 
 	isSaved := FileUtils.SaveFile(ctx, fileHeader, filename)
 

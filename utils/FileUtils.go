@@ -41,7 +41,7 @@ func FileValidationByExtension(fileHeader *multipart.FileHeader, fileExtension [
 	result := false
 
 	for _, typeFile := range fileExtension {
-		if extension == typeFile {
+		if extension == "."+typeFile {
 			result = true
 			break
 		}
@@ -50,11 +50,23 @@ func FileValidationByExtension(fileHeader *multipart.FileHeader, fileExtension [
 }
 
 func RandomFileName(extensionFile string, prefix ...string) string {
-	if prefix[0] == "" {
-		prefix[0] = "file"
+
+	currentPrefix := "file"
+	if len(prefix) > 0 && prefix[0] != "" {
+		currentPrefix = prefix[0]
 	}
+
+	// currentPrefix := "file"
+	// if len(prefix) > 0 {
+	// 	if prefix[0] == "" {
+	// 		currentPrefix = prefix[0]
+	// 	}
+	// } else {
+	// 	prefix[0] = "file"
+	// }
+
 	currentTime := time.Now().UTC().Format("20060102T150405Z")
-	filename := fmt.Sprintf("%s-%s-%s%s", prefix[0], currentTime, RandomString(20), extensionFile)
+	filename := fmt.Sprintf("%s-%s-%s%s", currentPrefix, currentTime, RandomString(20), extensionFile)
 
 	return filename
 
@@ -64,7 +76,7 @@ func SaveFile(ctx *gin.Context, fileHeader *multipart.FileHeader, filename strin
 	errUpload := ctx.SaveUploadedFile(fileHeader, fmt.Sprintf("./public/files/%s", filename))
 
 	if errUpload != nil {
-		log.Println("Failed to upload file")
+		log.Println("Can't save file")
 		return false
 	} else {
 		return true
