@@ -1,8 +1,14 @@
 package FileUtils
 
 import (
+	"fmt"
+	"log"
 	"math/rand"
 	"mime/multipart"
+	"path/filepath"
+	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 var charset = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
@@ -17,6 +23,7 @@ func RandomString(n int) string {
 
 func FileValidation(fileHeader *multipart.FileHeader, fileType []string) bool {
 	contentType := fileHeader.Header.Get("Content-Type")
+	log.Println("content-Type", contentType)
 	result := false
 
 	for _, typeFile := range fileType {
@@ -26,4 +33,41 @@ func FileValidation(fileHeader *multipart.FileHeader, fileType []string) bool {
 		}
 	}
 	return result
+}
+
+func FileValidationByExtension(fileHeader *multipart.FileHeader, fileExtension []string) bool {
+	extension := filepath.Ext(fileHeader.Filename)
+	log.Println("extension", extension)
+	result := false
+
+	for _, typeFile := range fileExtension {
+		if extension == typeFile {
+			result = true
+			break
+		}
+	}
+	return result
+}
+
+func RandomFileName(extensionFile string, prefix ...string) string {
+	if prefix[0] == "" {
+		prefix[0] = "file"
+	}
+	currentTime := time.Now().UTC().Format("20060102T150405Z")
+	filename := fmt.Sprintf("%s-%s-%s%s", prefix[0], currentTime, RandomString(20), extensionFile)
+
+	return filename
+
+}
+
+func SaveFile(ctx *gin.Context, fileHeader *multipart.FileHeader, filename string) bool {
+	errUpload := ctx.SaveUploadedFile(fileHeader, fmt.Sprintf("./public/files/%s", filename))
+
+	if errUpload != nil {
+		log.Println("Failed to upload file")
+		return false
+	} else {
+		return true
+	}
+
 }
