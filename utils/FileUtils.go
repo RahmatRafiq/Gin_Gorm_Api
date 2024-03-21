@@ -35,18 +35,31 @@ func FileValidation(fileHeader *multipart.FileHeader, fileType []string) bool {
 	return result
 }
 
+// func FileValidationByExtension(fileHeader *multipart.FileHeader, fileExtension []string) bool {
+// 	extension := filepath.Ext(fileHeader.Filename)
+// 	log.Println("extension", extension)
+// 	result := false
+
+// 	for _, typeFile := range fileExtension {
+// 		if extension == "."+typeFile {
+// 			result = true
+// 			break
+// 		}
+// 	}
+// 	return result
+// }
+
 func FileValidationByExtension(fileHeader *multipart.FileHeader, fileExtension []string) bool {
 	extension := filepath.Ext(fileHeader.Filename)
 	log.Println("extension", extension)
-	result := false
 
-	for _, typeFile := range fileExtension {
-		if extension == "."+typeFile {
-			result = true
-			break
+	for _, allowedExtension := range fileExtension {
+		if extension == allowedExtension {
+			return true
 		}
 	}
-	return result
+
+	return false
 }
 
 func RandomFileName(extensionFile string, prefix ...string) string {

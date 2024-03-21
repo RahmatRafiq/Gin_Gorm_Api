@@ -2,6 +2,7 @@ package FileControllers
 
 import (
 	FileUtils "Gin_Gorm_Api/utils"
+	"net/http"
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
@@ -16,28 +17,18 @@ func UploadFile(ctx *gin.Context) {
 		})
 		return
 	}
-
-	fileExtension := []string{"png"}
-	isFileValidated := FileUtils.FileValidation(fileHeader, fileExtension)
+	fileExtension := []string{".png", ".jpg", ".jpeg"}
+	isFileValidated := FileUtils.FileValidationByExtension(fileHeader, fileExtension)
 
 	if !isFileValidated {
-		ctx.AbortWithStatusJSON(400, gin.H{
-			"message": "file not allowed ",
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": "File type not allowed",
 		})
+		return
 	}
-
-	// fileType := []string{"image/img"}
-	// isFileValidated := FileUtils.FileValidation(fileHeader, fileType)
-
-	// if !isFileValidated {
-	// 	ctx.AbortWithStatusJSON(400, gin.H{
-	// 		"message": "file not allowed ",
-	// 	})
-	// }
 
 	extensionFile := filepath.Ext(fileHeader.Filename)
 	filename := FileUtils.RandomFileName(extensionFile)
-	// filename := FileUtils.RandomFileName(extensionFile, "file")
 
 	isSaved := FileUtils.SaveFile(ctx, fileHeader, filename)
 
