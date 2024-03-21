@@ -75,8 +75,8 @@ func SaveFile(ctx *gin.Context, fileHeader *multipart.FileHeader, filename strin
 
 }
 
-func DestroyFile(filename string) error {
-	error := os.Remove(filename)
+func DestroyFile(filepath string) error {
+	error := os.Remove(filepath)
 	if error != nil {
 		log.Println("Failed to delete file")
 		return error
