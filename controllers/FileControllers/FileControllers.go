@@ -1,6 +1,7 @@
 package FileControllers
 
 import (
+	"Gin_Gorm_Api/costanta"
 	FileUtils "Gin_Gorm_Api/utils"
 	"net/http"
 	"path/filepath"
@@ -52,7 +53,7 @@ func HandleDestroyFile(ctx *gin.Context) {
 		})
 	}
 
-	err := FileUtils.DestroyFile("./public/files/" + filename)
+	err := FileUtils.DestroyFile(costanta.DIR_FILE + filename)
 
 	if err != nil {
 		ctx.JSON(500, gin.H{
