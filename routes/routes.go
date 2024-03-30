@@ -7,6 +7,7 @@ import (
 	"Gin_Gorm_Api/controllers/MahasiswaControllers"
 	"Gin_Gorm_Api/controllers/ProdiControllers"
 	"Gin_Gorm_Api/controllers/UserController"
+	"Gin_Gorm_Api/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +27,7 @@ func InitRoutes(app *gin.Engine) {
 	// /user/paginate?page=2 untuk paginasi yang mengambil data 10(default) per halaman dan menampilkan halaman ke 2
 
 	route.POST("/file", FileControllers.UploadFile)
-	route.DELETE("/file/:filename", FileControllers.HandleDestroyFile)
+	route.DELETE("/file/:filename", middleware.AuthMiddleware, FileControllers.HandleDestroyFile)
 
 	route.GET("/mahasiswa", MahasiswaControllers.GetAllMahasiswa)
 	route.GET("/fakultas", FakultasControllers.GetAllFakultas)
