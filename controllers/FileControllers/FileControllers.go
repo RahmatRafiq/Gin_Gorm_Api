@@ -2,7 +2,7 @@ package FileControllers
 
 import (
 	"Gin_Gorm_Api/costanta"
-	FileUtils "Gin_Gorm_Api/utils"
+	utils "Gin_Gorm_Api/utils"
 	"net/http"
 	"path/filepath"
 
@@ -19,7 +19,7 @@ func UploadFile(ctx *gin.Context) {
 		return
 	}
 	fileExtension := []string{".png", ".jpg", ".jpeg"}
-	isFileValidated := FileUtils.FileValidationByExtension(fileHeader, fileExtension)
+	isFileValidated := utils.FileValidationByExtension(fileHeader, fileExtension)
 
 	if !isFileValidated {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -29,9 +29,9 @@ func UploadFile(ctx *gin.Context) {
 	}
 
 	extensionFile := filepath.Ext(fileHeader.Filename)
-	filename := FileUtils.RandomFileName(extensionFile)
+	filename := utils.RandomFileName(extensionFile)
 
-	isSaved := FileUtils.SaveFile(ctx, fileHeader, filename)
+	isSaved := utils.SaveFile(ctx, fileHeader, filename)
 
 	if !isSaved {
 		ctx.JSON(500, gin.H{
@@ -53,7 +53,7 @@ func HandleDestroyFile(ctx *gin.Context) {
 		})
 	}
 
-	err := FileUtils.DestroyFile(costanta.DIR_FILE + filename)
+	err := utils.DestroyFile(costanta.DIR_FILE + filename)
 
 	if err != nil {
 		ctx.JSON(500, gin.H{
