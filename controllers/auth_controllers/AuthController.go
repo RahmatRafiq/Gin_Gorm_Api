@@ -21,7 +21,7 @@ func Login(ctx *gin.Context) {
 	}
 
 	user := new(models.Users)
-	errUser := database.DB.Table("users").Where("email = ?", loginReq.Email).Find(&user)
+	errUser := database.DB.Table("users").Where("email = ?", loginReq.Email).Find(&user).Error
 
 	if errUser != nil {
 		ctx.AbortWithStatusJSON(404, gin.H{
