@@ -3,13 +3,20 @@ package FileControllers
 import (
 	"Gin_Gorm_Api/costanta"
 	utils "Gin_Gorm_Api/utils"
+	"fmt"
 	"net/http"
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 func UploadFile(ctx *gin.Context) {
+	claimsData := ctx.MustGet("claimsData").(jwt.MapClaims)
+	fmt.Println("claimsData => email=> ", claimsData["email"])
+
+	userId := ctx.MustGet("user_id").(int)
+	fmt.Println("userId => ", userId)
 
 	fileHeader, _ := ctx.FormFile("file")
 	if fileHeader == nil {

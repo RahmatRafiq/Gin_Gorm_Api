@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"Gin_Gorm_Api/utils"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -25,12 +26,20 @@ func AuthMiddleware(ctx *gin.Context) {
 		return
 	}
 
-	if token != "123" {
+	claimsData, err := utils.DecodeToken(token)
+
+	if err != nil {
 		ctx.AbortWithStatusJSON(401, gin.H{
-			"error": "Token is not valid",
+			"error": "unauthenticated",
 		})
 		return
 	}
+
+	ctx.Set("claimsData", claimsData)
+	ctx.Set("user_id", claimsData["id"])
+	ctx.Set("email", claimsData["email"])
+	ctx.Set("username", claimsData["username"])
+
 	ctx.Next()
 }
 
