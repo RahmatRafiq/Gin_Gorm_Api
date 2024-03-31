@@ -7,6 +7,7 @@ import (
 	"Gin_Gorm_Api/controllers/MahasiswaControllers"
 	"Gin_Gorm_Api/controllers/ProdiControllers"
 	"Gin_Gorm_Api/controllers/UserController"
+	"Gin_Gorm_Api/controllers/auth_controllers"
 	"Gin_Gorm_Api/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -15,6 +16,8 @@ import (
 func InitRoutes(app *gin.Engine) {
 	route := app.Group("")
 	route.Static(app_config.STATIC_ROUTE, app_config.STATIC_DIR)
+
+	route.POST("/login", auth_controllers.Login)
 
 	userRoute := route.Group("user")
 	userRoute.GET("/", UserController.GetAllUser)

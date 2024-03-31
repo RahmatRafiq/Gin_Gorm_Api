@@ -45,6 +45,11 @@ func Login(ctx *gin.Context) {
 		"exp":      time.Now().Add(time.Hour * 1).Unix(),
 	}
 
+	claims["user_id"] = user.ID
+	claims["email"] = user.Email
+	claims["username"] = user.Username
+	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
+
 	token, errToken := utils.GenerateToken(&claims)
 	if errToken != nil {
 		ctx.JSON(500, gin.H{

@@ -71,9 +71,9 @@ func Store(ctx *gin.Context) {
 	}
 
 	user := models.Users{
-		Username:    &userReq.Username,
-		Email:       &userReq.Email,
-		Password:    &userReq.Password,
+		Username: &userReq.Username,
+		Email:    &userReq.Email,
+		// Password:    &userReq.Password,
 		Role:        &userReq.Role,
 		MahasiswaID: &userReq.MahasiswaID,
 	}
@@ -133,7 +133,7 @@ func Update(ctx *gin.Context) {
 
 	user.Username = &userReq.Username
 	user.Email = &userReq.Email
-	user.Password = &userReq.Password
+	// user.Password = &userReq.Password
 	user.Role = &userReq.Role
 	user.MahasiswaID = &userReq.MahasiswaID
 
